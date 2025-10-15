@@ -1,0 +1,28 @@
+html {
+  font-family: Nunito, "Adwaita Sans", Inter, "SF Pro Text", "SF Pro";
+}
+body {
+  max-width: 33rem;
+  padding: 0 1.3125rem 2.625rem;
+  padding-right: 3.5vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+nav {
+  display: flex;
+  gap: 1.5em;
+  flex-wrap: wrap;
+}
+nav a {
+  text-decoration: none;
+}
+
+.site-wordmark {
+  display: flex;
+  align-items: center;
+}
