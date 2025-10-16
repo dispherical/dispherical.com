@@ -34,7 +34,7 @@ const titleToSlug = (title) =>
 const fs = require('fs').promises;
 const path = require('path');
 module.exports = async function (url) {
-   await fs.mkdir(path.resolve("_site", "icons"), { recursive: true })
+  await fs.mkdir(path.resolve("_site", "icons"), { recursive: true })
   var originDomain = new URL(url).hostname.split('.').slice(-2).join('.')
   const icons = await (await fetch("https://rawcdn.githack.com/simple-icons/simple-icons/refs/heads/develop/data/simple-icons.json")).json()
   var foundIcon = icons.find(icon => {
@@ -43,6 +43,8 @@ module.exports = async function (url) {
   if (originDomain == "github.com") foundIcon = icons.find(icon => icon.title == "GitHub")
   if (originDomain == "bsky.app") foundIcon = icons.find(icon => icon.title == "Bluesky")
   if (originDomain == "dino.icu") foundIcon = icons.find(icon => icon.title == "Mastodon")
+  if (originDomain == "wikipedia.org") foundIcon = icons.find(icon => icon.title == "Wikipedia")
+
   if (originDomain == "keyoxide.org") return "https://design.keyoxide.org/keyoxide/logos/keyoxide.rounded.2x.png"
   if (foundIcon) {
     const slug = titleToSlug(foundIcon?.title || "");
@@ -59,10 +61,10 @@ module.exports = async function (url) {
     const filePath = path.join(iconsDir, `${slug}.svg`);
     const _filePath = path.resolve("_site", "icons", `${slug}.svg`);
     await fs.writeFile(filePath, svg, 'utf8');
-   
+
     await fs.writeFile(_filePath, svg, 'utf8');
     return `/icons/${slug}.svg`
-   
+
   }
   else return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}`
 }
