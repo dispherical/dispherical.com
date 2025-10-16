@@ -54,18 +54,20 @@
 
   <body data-barba="wrapper">
     <div id="map"></div>
+
     <header>
       <p class="site-wordmark">
         <b><a href="/">dispherical.com</a></b>
       </p>
       <nav>
         <a href="/now">Now</a>
+        <a href="https://blog.dispherical.com">Blog</a>
         <a href="/colophon">Colophon</a>&nbsp;
-       <span class="nav-rss">
-      <a href="https://blog.dispherical.com/rss.xml">
-        <span class="material-symbols-outlined"> rss_feed </span>
-      </a>
-    </span>
+        <span class="nav-rss">
+          <a href="https://blog.dispherical.com/rss.xml">
+            <span class="material-symbols-outlined"> rss_feed </span>
+          </a>
+        </span>
       </nav>
     </header>
     <main data-barba="container">
@@ -75,7 +77,10 @@
       class="enby-accent-bar"
       style="background:linear-gradient(to right,#598b7c 0,#598b7c 14.2857%,#6bb8aa 14.2857%,#6bb8aa 28.5714%,#85c87d 28.5714%,#85c87d 42.8571%,#e4f1e8 42.8571%,#e4f1e8 57.1429%,#709cd4 57.1429%,#709cd4 71.4286%,#5450bc 71.4286%,#5450bc 85.7143%,#493b69 85.7143%,#493b69 100%);height:5px;width:100%;margin:0"
     ></div>
-    <footer>&copy; 2025 dispherical.com. <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">Licensed under the AGPL 3.0</a>.</footer>
+    <footer>
+      &copy; 2025 dispherical.com.
+      <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">Licensed under the AGPL 3.0</a>.
+    </footer>
     <script>
       document.addEventListener('DOMContentLoaded', (event) => {
         barba.init({
@@ -147,6 +152,21 @@
           const mode = e.matches ? 'dark' : 'light';
           map.setStyle(getCartoStyle(mode));
         });
+      });
+      const hoverElement = document.querySelector('#hoveroverme');
+      const mapElement = document.querySelector('#map');
+
+      hoverElement.addEventListener('mouseenter', () => {
+        hoverElement.textContent = '(let go to return back to normal)';
+        mapElement.style.transition = 'opacity 0.2s ease';
+        mapElement.style.opacity = '0.8';
+        hoverElement.style.opacity = '0.9';
+      });
+
+      hoverElement.addEventListener('mouseleave', () => {
+        hoverElement.textContent = 'Hover over me to make the map more visible';
+        mapElement.style.transition = 'opacity 0.2s ease';
+        mapElement.style.opacity = '0.1';
       });
     </script>
   </body>
