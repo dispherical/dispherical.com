@@ -21,24 +21,49 @@ body {
 }
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 2em;
+  height: 3.5em;
 }
+
+.site-wordmark,
 nav {
   display: flex;
-  gap: 1.5em;
-  flex-wrap: wrap;
-}
-nav a {
-  text-decoration: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .site-wordmark {
+  margin: 0;
+  padding: 0;
+}
+.site-wordmark a {
+  text-decoration: none;
+}
+nav {
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-rss {
+  margin-left: auto;
   display: flex;
   align-items: center;
 }
+nav a {
+  text-decoration: underline !important;
+  color: grey !important;
+}
+
+.site-wordmark a {
+  color: black !important;
+}
 footer {
-  border-top: 1px solid #e0e0e0;
   padding-top: 0.2rem;
 }
 
@@ -46,7 +71,8 @@ a:hover,
 a:visited,
 a {
   color: var(--light-anchor-color);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: .1560em
 }
 
 @media (prefers-color-scheme: dark) {
@@ -69,6 +95,9 @@ a {
   }
   .book-item {
     background-color: rgba(255, 255, 255, 0.02);
+  }
+  .site-wordmark a {
+    color: white !important;
   }
 }
 
