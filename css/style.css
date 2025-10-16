@@ -1,3 +1,14 @@
+:root {
+  --light-bg-color: #eff1f5;
+  --light-text-color: #4c4f69;
+  --light-anchor-color: #1e66f5;
+  --dark-bg-color: #11111b;
+  --dark-text-color: #cdd6f4;
+  --dark-anchor-color: #8aadf4;
+  --border-color: #5f6267;
+  --title-size: 48px;
+  --border-width: 1px;
+}
 html {
   font-family: Nunito, "Adwaita Sans", Inter, "SF Pro Text", "SF Pro";
 }
@@ -25,4 +36,104 @@ nav a {
 .site-wordmark {
   display: flex;
   align-items: center;
+}
+footer {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 0.2rem;
+}
+
+a:hover,
+a:visited,
+a {
+  color: var(--light-anchor-color);
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .artist-name,
+  .album-name,
+  .track-lyric {
+    color: var(--dark-text-color);
+  }
+  .post-contents {
+    background-color: rgba(128, 128, 128, 0.05);
+  }
+  html {
+    background-color: var(--dark-bg-color);
+    color: var(--dark-text-color);
+  }
+  a,
+  a:visited,
+  a:hover {
+    color: var(--dark-anchor-color);
+  }
+  .book-item {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+}
+
+#map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+/* Now playing insanity below (kms) */
+
+.now-playing {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 2em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  max-width: 480px;
+}
+
+.now-playing-content {
+  align-items: center;
+  gap: 18px;
+}
+
+.album-art img {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.track-name {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #222;
+}
+
+.artist-name,
+.album-name {
+  font-size: 0.97em;
+  color: #555;
+}
+
+.track-lyric {
+  font-size: 0.92em;
+  color: #888;
+  font-style: italic;
+}
+
+.lastfm-icon {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
 }

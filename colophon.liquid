@@ -1,0 +1,21 @@
+---
+layout: base.liquid
+permalink: /colophon/index.html
+title: "Colophon"
+description: "Details about this site"
+---
+{% renderTemplate "md" %}
+# Colophon
+
+A [colophon](https://indieweb.org/colophon) is a section which describes what makes up a site and the design ideology behind it.
+
+The code behind this website is [Open source on GitHub](https://github.com/dispherical/dispherical.com), licensed under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
+
+This website was made to have some fun (e.g. some animations) but also be friendly to a variety of devices and older technology and to save bandwith (many resources are inlined upon compiling).
+
+This website was made using <span id="generator"></span>
+{% endrenderTemplate %}
+
+<script>
+  document.querySelector("#generator").innerText = "{{ eleventy.generator }}"
+</script>

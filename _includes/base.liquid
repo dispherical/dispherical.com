@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="generator" content="{{ eleventy.generator }}">
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
       rel="stylesheet"
@@ -14,6 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     >
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13/dist/gsap.min.js"></script>
     <style>
       .material-symbols-outlined {
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -22,17 +24,98 @@
     <style>
       {% include "../css/style.css" %}
     </style>
+    <script>
+      {% include "js/barba.js" %}
+    </script>
   </head>
-  <body>
+
+  <body data-barba="wrapper">
+    <div id="map"></div>
     <header>
       <p class="site-wordmark"><b>dispherical.com</b></p>
       <nav>
         <a href="/">Home</a>
+        <a href="/now">Now</a>
+        <a href="/colophon">Colophon</a>
         <a href="https://blog.dispherical.com/rss.xml"><span class="material-symbols-outlined"> rss_feed </span></a>
       </nav>
     </header>
-    <main>
+    <main data-barba="container">
       {{ content }}
     </main>
+    <footer>&copy; 2025 dispherical.com. <a href="/license">Licensed under the AGPL 3.0</a></footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+        barba.init({
+          transitions: [
+            {
+              name: 'opacity-transition',
+              leave(data) {
+                data.current.container.style.display = 'none';
+              },
+              enter(data) {
+                return gsap.fromTo(
+                  data.next.container,
+                  { opacity: 0, y: '-5%' },
+                  { opacity: 1, y: '0%', duration: 0.05, clearProps: 'all', ease: 'power4.out' }
+                );
+              },
+            },
+          ],
+        });
+      });
+    </script>
+    <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        function getCartoTiles(mode) {
+          const variant = mode === 'dark' ? 'dark_all' : 'light_all';
+          return [
+            `https://a.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
+            `https://b.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
+            `https://c.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
+            `https://d.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
+          ];
+        }
+
+        function getCartoStyle(mode) {
+          return {
+            version: 8,
+            sources: {
+              carto: {
+                type: 'raster',
+                tiles: getCartoTiles(mode),
+                tileSize: 256,
+                attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+              },
+            },
+            layers: [
+              {
+                id: 'carto',
+                type: 'raster',
+                source: 'carto',
+              },
+            ],
+          };
+        }
+
+        function getColorScheme() {
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        const map = new maplibregl.Map({
+          style: getCartoStyle(getColorScheme()),
+          center: [-84.388, 33.75],
+          zoom: 9.5,
+          container: 'map',
+          attributionControl: false,
+        });
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          const mode = e.matches ? 'dark' : 'light';
+          map.setStyle(getCartoStyle(mode));
+        });
+      });
+    </script>
   </body>
 </html>
