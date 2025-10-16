@@ -34,6 +34,7 @@ const titleToSlug = (title) =>
 const fs = require('fs').promises;
 const path = require('path');
 module.exports = async function (url) {
+   await fs.mkdir(path.resolve("_site", "icons"), { recursive: true })
   var originDomain = new URL(url).hostname.split('.').slice(-2).join('.')
   const icons = await (await fetch("https://rawcdn.githack.com/simple-icons/simple-icons/refs/heads/develop/data/simple-icons.json")).json()
   var foundIcon = icons.find(icon => {
@@ -58,6 +59,7 @@ module.exports = async function (url) {
     const filePath = path.join(iconsDir, `${slug}.svg`);
     const _filePath = path.resolve("_site", "icons", `${slug}.svg`);
     await fs.writeFile(filePath, svg, 'utf8');
+   
     await fs.writeFile(_filePath, svg, 'utf8');
     return `/icons/${slug}.svg`
    
