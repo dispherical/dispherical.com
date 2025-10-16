@@ -101,6 +101,32 @@
           ],
         });
       });
+
+      window.previousUrl = '';
+      const observer = new MutationObserver(function (mutations) {
+        if (location.href !== window.previousUrl) {
+          previousUrl = location.href;
+          setTimeout(function(){
+          const hoverElement = document.querySelector('#hoveroverme');
+        const mapElement = document.querySelector('#map');
+
+        hoverElement.addEventListener('mouseenter', () => {
+          hoverElement.textContent = '(let go to return back to normal)';
+          mapElement.style.transition = 'opacity 0.2s ease';
+          mapElement.style.opacity = '0.8';
+          hoverElement.style.opacity = '0.9';
+        });
+
+        hoverElement.addEventListener('mouseleave', () => {
+          hoverElement.textContent = 'Hover over me to make the map more visible';
+          mapElement.style.transition = 'opacity 0.2s ease';
+          mapElement.style.opacity = '0.1';
+        });
+          },1000)
+        }
+      });
+      const config = { subtree: true, childList: true };
+      observer.observe(document, config);
     </script>
     <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
     <script>
@@ -153,21 +179,21 @@
           map.setStyle(getCartoStyle(mode));
         });
       });
-      const hoverElement = document.querySelector('#hoveroverme');
-      const mapElement = document.querySelector('#map');
+     const hoverElement = document.querySelector('#hoveroverme');
+        const mapElement = document.querySelector('#map');
 
-      hoverElement.addEventListener('mouseenter', () => {
-        hoverElement.textContent = '(let go to return back to normal)';
-        mapElement.style.transition = 'opacity 0.2s ease';
-        mapElement.style.opacity = '0.8';
-        hoverElement.style.opacity = '0.9';
-      });
+        hoverElement.addEventListener('mouseenter', () => {
+          hoverElement.textContent = '(let go to return back to normal)';
+          mapElement.style.transition = 'opacity 0.2s ease';
+          mapElement.style.opacity = '0.8';
+          hoverElement.style.opacity = '0.9';
+        });
 
-      hoverElement.addEventListener('mouseleave', () => {
-        hoverElement.textContent = 'Hover over me to make the map more visible';
-        mapElement.style.transition = 'opacity 0.2s ease';
-        mapElement.style.opacity = '0.1';
-      });
+        hoverElement.addEventListener('mouseleave', () => {
+          hoverElement.textContent = 'Hover over me to make the map more visible';
+          mapElement.style.transition = 'opacity 0.2s ease';
+          mapElement.style.opacity = '0.1';
+        });
     </script>
   </body>
 </html>

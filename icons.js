@@ -33,6 +33,10 @@ const titleToSlug = (title) =>
 
 const fs = require('fs').promises;
 const path = require('path');
+const cheerio = require('cheerio');
+const crypto = require('crypto')
+const mime = require('mime-types');
+
 module.exports = async function (url) {
   await fs.mkdir(path.resolve("_site", "icons"), { recursive: true })
   var originDomain = new URL(url).hostname.split('.').slice(-2).join('.')
@@ -65,6 +69,40 @@ module.exports = async function (url) {
     await fs.writeFile(_filePath, svg, 'utf8');
     return `/icons/${slug}.svg`
 
+  } else {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+      const html = await res.text();
+      const $ = cheerio.load(html);
+
+      const iconHref = $('link[rel="icon"]').attr('href') || $('link[rel="shortcut icon"]').attr('href');
+      if (iconHref) {
+        const iconUrl = new URL(iconHref, url).href;
+        const iconRes = await fetch(iconUrl);
+        if (!iconRes.ok) throw new Error(`Failed to fetch favicon at ${iconUrl}`);
+        const contentType = iconRes.headers.get('content-type');
+        let extension = mime.extension(contentType);
+        if (!extension) {
+          extension = iconUrl.split('.').pop().split('?')[0] || 'ico';
+        }
+
+        const iconBuffer = Buffer.from(await iconRes.arrayBuffer());
+
+        const iconsDir = path.join(__dirname, 'icons');
+        await fs.mkdir(iconsDir, { recursive: true });
+        const id = crypto.createHash('md5').update(url).digest("hex");
+        const filePath = path.join(iconsDir, `${id}.${extension}`);
+        const _filePath = path.resolve("_site", "icons", `${id}.${extension}`);
+        await fs.writeFile(filePath, iconBuffer);
+        await fs.writeFile(_filePath, iconBuffer);
+
+        return `/icons/${id}.${extension}`;
+      }
+    } catch (e) {
+      console.error(e)
+    }
+    return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}`
   }
-  else return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}`
+
 }
