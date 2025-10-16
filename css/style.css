@@ -99,6 +99,7 @@ a {
   .site-wordmark a {
     color: white !important;
   }
+  
 }
 
 #map {
@@ -165,4 +166,32 @@ a {
   margin-left: auto;
   width: 22px;
   height: 22px;
+}
+@media (prefers-color-scheme: dark) {
+  .now-playing {
+    background: #181825;
+    border: 1px solid #313244;
+    color: var(--dark-text-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .track-name {
+    color: #cdd6f4;
+  }
+  .artist-name,
+  .album-name {
+    color: #a6adc8;
+  }
+  .track-lyric {
+    color: #9399b2;
+  }
+  .album-art img {
+    border: 1px solid #45475a;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  }
+  .lastfm-icon {
+    filter: invert(1) brightness(1.2);
+  }
+  .flipover {
+    filter: invert(1) brightness(1.2);
+  }
 }

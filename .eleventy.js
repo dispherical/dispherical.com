@@ -14,7 +14,7 @@ module.exports = async function (eleventyConfig) {
         const href = $a.attr("href");
         if (href && !href.includes("https://unsplash.com") && !href.includes("https://cdn.dispherical.com") && !href.includes("https://blog.dispherical.com")) {
           const faviconUrl = await icons(href)
-          $a.prepend(`<img src="${faviconUrl}" alt="favicon" style="width:1em;height:1em;vertical-align:middle;margin-right:0.25em;">`);
+          $a.prepend(`<img src="${faviconUrl}" alt="favicon" style="width:1em;height:1em;vertical-align:middle;margin-right:0.25em;" class="${href.includes("github.com") ? "flipover" : ""}">`);
 
         }
 
@@ -25,6 +25,6 @@ module.exports = async function (eleventyConfig) {
     return content;
   });
 
-        eleventyConfig.addPassthroughCopy("icons");
+  eleventyConfig.addPassthroughCopy("icons");
 
 }
