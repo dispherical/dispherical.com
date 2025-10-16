@@ -18,6 +18,9 @@ howdy, i'm dispherical
 <h2>
   Listening to
 </h2>
+<script>
+  {% include "js/lyrics.js" %}
+</script>
 <div class="now-playing">
   <div class="now-playing-content" style="display: flex;">
     <div class="album-art">
@@ -28,10 +31,15 @@ howdy, i'm dispherical
       <div class="artist-name">Sayfalse &amp; Scythermane</div>
       <div class="album-name">Com Medo! - EP</div>
       <div class="track-lyric" id="currentLyric">...</div>
+    
     </div>
     <img class="lastfm-icon" src="https://cdn.simpleicons.org/last.fm/black">
   </div>
   <p style="display: none;">Nothing playing right now</p>
+</div>
+  <div style="margin-top:1em;">
+  <button id="expandLyricsBtn" onclick="toggleLyricsExpanded()" style="display:none;">Show lyrics</button>
+  <div id="expandLyricsBox" style="display:none; background:#f5f5f5; border-radius:8px; margin-top:8px; padding:12px; max-height:300px; overflow:auto;"></div>
 </div>
 <h2>Buttons</h2>
 <a href="/88x31"class="badge"><img src="https://cdn.dispherical.com/88x31.png" alt="dispherical.com" title="dispherical.com"> </a>
@@ -47,9 +55,7 @@ howdy, i'm dispherical
 [h.hackclub.app](https://h.hackclub.app/), [sfernandez.dev](https://sfernandez.dev/),
 [saahild.com](https://saahild.com/retro/), [reeseric.ci](https://reeseric.ci/), [whatware.net](https://whatware.net), [eeriergosling.dev](https://eeriergosling.dev/), [owo.bet](https://owo.bet), [jay.loves-being-a.dev](https://jay.loves-being-a.dev/), [avocado-ship-it.github.io](https://avocado-ship-it.github.io/), [3kh0.net](https://3kh0.net/), [djlaser.dev](https://djlaser.dev), [alex.sirota.org](https://alex.sirota.org), [ella.ad](https://ella.ad)
 {% endrenderTemplate %}
-<script>
-  {% include "js/lyrics.js" %}
-</script>
+
 <script>
   function resetTime() {
     document.querySelector("#time").innerHTML = new Date().toLocaleTimeString("en-US", { timeZone: "America/New_York", timeZoneName: "short" })

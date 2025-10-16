@@ -99,8 +99,7 @@ module.exports = async function (url) {
 
         return `/icons/${id}.${extension}`;
       }
-    } catch (e) {
-      console.error(e)
+    } catch  {
     }
     return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}`
   }
