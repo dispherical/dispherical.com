@@ -7,13 +7,14 @@
   --dark-anchor-color: #8aadf4;
   --border-color: #5f6267;
   --title-size: 48px;
+  --max-width: 33rem;
   --border-width: 1px;
 }
 html {
   font-family: Nunito, "Adwaita Sans", Inter, "SF Pro Text", "SF Pro";
 }
 body {
-  max-width: 33rem;
+  max-width: var(--max-width);
   padding: 0 1.3125rem 2.625rem;
   padding-right: 3.5vw;
   margin-left: auto;
@@ -72,7 +73,7 @@ a:visited,
 a {
   color: var(--light-anchor-color);
   text-decoration: underline;
-  text-underline-offset: .1560em
+  text-underline-offset: 0.156em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -99,7 +100,6 @@ a {
   .site-wordmark a {
     color: white !important;
   }
-  
 }
 
 #map {
@@ -112,7 +112,15 @@ a {
   opacity: 0.1;
   pointer-events: none;
 }
+.badge {
+  image-rendering: pixelated;
+}
 
+code {
+  width: var(--max-width);
+  overflow-x: scroll;
+  display: inline-block;
+}
 /* Now playing insanity below (kms) */
 
 .now-playing {
@@ -172,7 +180,7 @@ a {
     background: #181825;
     border: 1px solid #313244;
     color: var(--dark-text-color);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   }
   .track-name {
     color: #cdd6f4;
@@ -186,7 +194,7 @@ a {
   }
   .album-art img {
     border: 1px solid #45475a;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
   }
   .lastfm-icon {
     filter: invert(1) brightness(1.2);
