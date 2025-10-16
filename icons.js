@@ -56,7 +56,9 @@ module.exports = async function (url) {
     const iconsDir = path.join(__dirname, 'icons');
     await fs.mkdir(iconsDir, { recursive: true });
     const filePath = path.join(iconsDir, `${slug}.svg`);
+    const _filePath = path.resolve("_site", "icons", `${slug}.svg`);
     await fs.writeFile(filePath, svg, 'utf8');
+    await fs.writeFile(_filePath, svg, 'utf8');
     return `/icons/${slug}.svg`
    
   }
