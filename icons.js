@@ -76,7 +76,11 @@ module.exports = async function (url) {
       const html = await res.text();
       const $ = cheerio.load(html);
 
-      const iconHref = $('link[rel="icon"]').attr('href') || $('link[rel="shortcut icon"]').attr('href');
+      const iconHref =
+        $('link[rel="icon"]').attr('href') ||
+        $('link[rel="apple-touch-icon"]').attr('href') ||
+        $('link[rel="mask-icon"]').attr('href') ||
+        $('link[rel="shortcut icon"]').attr('href');
       if (iconHref) {
         const iconUrl = new URL(iconHref, url).href;
         const iconRes = await fetch(iconUrl);
@@ -99,7 +103,7 @@ module.exports = async function (url) {
 
         return `/icons/${id}.${extension}`;
       }
-    } catch  {
+    } catch {
     }
     return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}`
   }
