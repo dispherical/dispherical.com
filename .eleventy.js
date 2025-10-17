@@ -25,8 +25,8 @@ module.exports = async function (eleventyConfig) {
       const ffp = results
         .filter(Boolean)
         .map(async ({ $a, href }) => {
-          //const faviconUrl = await icons(href);
-          const faviconUrl = `https://faviconservice.dispherical.com/favicon?url=${encodeURIComponent(href)}`
+          const faviconUrl = await icons(href);
+          //const faviconUrl = `https://faviconservice.dispherical.com/favicon?url=${encodeURIComponent(href)}`
           $a.prepend(`<img src="${faviconUrl}" alt="favicon" style="width:1em;height:1em;vertical-align:middle;margin-right:0.25em;" class="${href.includes("github.com") ? "flipover" : ""}">`);
         });
 
