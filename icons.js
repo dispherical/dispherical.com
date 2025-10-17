@@ -50,7 +50,7 @@ module.exports = async function (url) {
   if (originDomain == "wikipedia.org") foundIcon = icons.find(icon => icon.title == "Wikipedia")
 
   if (originDomain == "keyoxide.org") return "https://design.keyoxide.org/keyoxide/logos/keyoxide.rounded.2x.png"
-  if (foundIcon) {
+  if (false) {
     const slug = titleToSlug(foundIcon?.title || "");
     const svgUrl = `https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/${slug}.svg`;
     const res = await fetch(svgUrl);
