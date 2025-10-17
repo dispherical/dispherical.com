@@ -11,6 +11,9 @@ module.exports = async function (eleventyConfig) {
 
       const fp = anchors.map(async (el) => {
         const $a = $(el);
+        const style = $a.attr("style") || "";
+        if ($a.hasClass("badge") || $a.hasClass("nofavicon") || style.includes("display: none")) return;
+
         if ($a.find("img").length > 0) return;
 
         const href = $a.attr("href");
