@@ -111,8 +111,10 @@
       window.previousUrl = '';
       const observer = new MutationObserver(function (mutations) {
         if (location.href !== window.previousUrl) {
+          
           previousUrl = location.href;
           setTimeout(function () {
+            if (typeof init == "function") init();
             const hoverElement = document.querySelector('#hoveroverme');
             const mapElement = document.querySelector('#map');
 
@@ -128,7 +130,7 @@
               mapElement.style.transition = 'opacity 0.2s ease';
               mapElement.style.opacity = '0.1';
             });
-          }, 1000);
+          }, 2000);
         }
       });
       const config = { subtree: true, childList: true };

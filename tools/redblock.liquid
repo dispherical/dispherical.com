@@ -2,18 +2,49 @@
 layout: base.liquid
 permalink: /tools/redblock/index.html
 title: Redblock
-description: A list of IPs in CIDR format (newline delimited) which are registered to states which are 'harmful to minors'.
+description: A list of IPs in CIDR format (newline delimited) which are registered to regions which are 'harmful to minors'.
 ---
 {% renderTemplate "md" %}
 # Redblock
-A list of IP ranges (in CIDR format, newline-delimited) registered to U.S. states that have enacted laws requiring age verification for online content deemed "harmful to minors."
+A list of IP ranges (in CIDR format, newline-delimited) registered to regions that have enacted laws requiring age verification for online content deemed "harmful to minors."
 
 These laws are often written in vague or overly broad terms, and in practice, they have been used or proposed to restrict access to LGBTQ+ content, sexual health information, and other constitutionally protected material.
 
 This list exists to help developers, creators, and platforms protect themselves from legal exposure by proactively blocking access from jurisdictions that impose these harmful requirements, not out of paranoia, but in response to very real, escalating censorship laws.
 
-**Note:** This list excludes states where the relevant laws have been blocked by a court (i.e., under injunction) or have not yet gone into effect. It is actively maintained and updated as new legal developments occur.
+**Note:** This list excludes regions where the relevant laws have been blocked by a court (i.e., under injunction) or have not yet gone into effect. It is actively maintained and updated as new legal developments occur.
 
+## API
+You can make calls to `http://redblock.dispherical.com/test?ip=[ipv4/ipv6]`
+
+```js
+{ "blocked": true } // if the user is in a restricted region
+{ "blocked": false } // if the user is NOT in a restricted region
+```
+
+## Usage Instructions (ipset)
+
+```bash
+wget https://cdn.dispherical.com/redblock/list.txt
+grep -v '^#' list.txt | grep -v '^[[:space:]]*$' > clean-list.txt
+
+{
+  echo "create blocked4 hash:net family inet hashsize 4096 maxelem 8000000"
+  awk '/\./{print "add blocked4", $0}' clean-list.txt
+} > ipset-restore.txt
+
+{
+  echo "create blocked6 hash:net family inet6 hashsize 4096 maxelem 8000000"
+  awk -F: '{if (NF>1) print "add blocked6", $0}' clean-list.txt
+} >> ipset-restore.txt
+
+sudo ipset restore < ipset-restore.txt
+
+sudo ipset test blocked[4/6] [ip]
+# e.g. sudo ipset test blocked4 1.1.1.1
+```
+
+## Download
 You may download the list from [https://cdn.dispherical.com/redblock/list.txt](https://cdn.dispherical.com/redblock/list.txt).
 
 Below is the header from the list:
@@ -28,9 +59,12 @@ Below is the header from the list:
 </pre>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
-    (async () => {
+      async function init(){
         const codeElem = document.querySelector("#header");
         codeElem.innerHTML = (await (await fetch("https://cdn.dispherical.com/redblock/header.txt")).text()).trim();
-        hljs.highlightElement(codeElem);
-    })();
+        hljs.highlightAll()
+      }
+      init();
 </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/default.min.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
