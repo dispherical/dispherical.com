@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://github.com/dispherical" rel="me">
+    <link rel="webmention" href="https://webmention.io/dispherical/webmention">
     <script
       defer
       src="https://savory.dispherical.com/script.js"
@@ -111,10 +113,9 @@
       window.previousUrl = '';
       const observer = new MutationObserver(function (mutations) {
         if (location.href !== window.previousUrl) {
-          
           previousUrl = location.href;
           setTimeout(function () {
-            if (typeof init == "function") init();
+            if (typeof init == 'function') init();
             const hoverElement = document.querySelector('#hoveroverme');
             const mapElement = document.querySelector('#map');
 
