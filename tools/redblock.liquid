@@ -1,0 +1,36 @@
+---
+layout: base.liquid
+permalink: /tools/redblock/index.html
+title: Redblock
+description: A list of IPs in CIDR format (newline delimited) which are registered to states which are 'harmful to minors'.
+---
+{% renderTemplate "md" %}
+# Redblock
+A list of IP ranges (in CIDR format, newline-delimited) registered to U.S. states that have enacted laws requiring age verification for online content deemed "harmful to minors."
+
+These laws are often written in vague or overly broad terms, and in practice, they have been used or proposed to restrict access to LGBTQ+ content, sexual health information, and other constitutionally protected material.
+
+This list exists to help developers, creators, and platforms protect themselves from legal exposure by proactively blocking access from jurisdictions that impose these harmful requirements, not out of paranoia, but in response to very real, escalating censorship laws.
+
+**Note:** This list excludes states where the relevant laws have been blocked by a court (i.e., under injunction) or have not yet gone into effect. It is actively maintained and updated as new legal developments occur.
+
+You may download the list from [https://cdn.dispherical.com/redblock/list.txt](https://cdn.dispherical.com/redblock/list.txt).
+
+Below is the header from the list:
+{% endrenderTemplate %}
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<pre>
+<code id="header" class="language-text">
+
+</code>
+</pre>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    (async () => {
+        const codeElem = document.querySelector("#header");
+        codeElem.innerHTML = (await (await fetch("https://cdn.dispherical.com/redblock/header.txt")).text()).trim();
+        hljs.highlightElement(codeElem);
+    })();
+</script>

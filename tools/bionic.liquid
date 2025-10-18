@@ -1,0 +1,179 @@
+---
+layout: base.liquid
+permalink: /tools/bionic/index.html
+title: Bionic Reading for epubs
+description: This tool turns any EPUB file into a 'bionic reading' format, making it more reabable by highlighting the first part of each word to guide your eyes through the text more efficiently.
+---
+<style>
+    @font-face {
+        font-family: 'Fast Sans';
+        src: url('https://cdn.jsdelivr.net/gh/Born2Root/Fast-Font@main/Fast_Sans.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'Fast Mono';
+        src: url('https://cdn.jsdelivr.net/gh/Born2Root/Fast-Font@main/Fast_Mono.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'Fast Serif';
+        src: url('https://cdn.jsdelivr.net/gh/Born2Root/Fast-Font@main/Fast_Serif.ttf') format('truetype');
+    }
+</style>
+<h1>Bionic Reading for epubs</h1>
+<p>This tool turns any EPUB file into a "bionic reading" format, making it more reabable by highlighting the
+    first part of each word to guide your eyes through the text more efficiently.</p>
+<input type="file" id="epubInput" accept=".epub">
+
+<h2>Options</h2>
+<label for="styleChoice">Choose Style:</label>
+<select id="styleChoice">
+    <option value="bold">Manual Bold</option>
+    <option value="sans">Fast Sans</option>
+    <option value="mono">Fast Mono</option>
+    <option value="serif">Fast Serif</option>
+</select>
+
+<button onclick="processEpub()">Convert</button>
+<h3>What does each style mean?</h3>
+<ul>
+    <li>Manual bold: It will apply the HTML bold tag to each word. This is great for E-readers that don't support
+        OpenType features, but it can mess with searching. It also keeps the book's original font.</li>
+    <li>Fast Fonts: Uses <a href="https://github.com/Born2Root/Fast-Font" target="_blank">Born2Root's Fast Font</a> and
+        replaces your book's font. This will make it compatible with most book search engines but not all E-readers
+        support OpenType features.
+        <ul>
+            <li style="font-family: 'Fast Sans', sans-serif;">
+                Fast Sans looks like this
+            </li>
+            <li style="font-family: 'Fast Mono', monospace;">
+                Fast Mono looks like this
+            </li>
+            <li style="font-family: 'Fast Serif', serif;">
+                Fast Serif looks like this
+            </li>
+        </ul>
+    </li>
+
+</ul>
+<a id="downloadLink" style="display:none">Download Bionic EPUB</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script type="text/javascript">
+    const fontFiles = {
+        sans: "https://cdn.jsdelivr.net/gh/Born2Root/Fast-Font@main/Fast_Sans.ttf",
+        mono: "https://cdn.jsdelivr.net/gh/Born2Root/Fast-Font@main/Fast_Mono.ttf",
+        serif: "hhttps://cdn.jsdelivr.net/gh/Born2Root/Fast-Font@main/Fast_Serif.ttf"
+    };
+
+    function bionicReading(text, mode) {
+        return text
+            .split(' ')
+            .map(word => {
+                const boldLength = Math.max(1, Math.floor(word.length * 0.4));
+                if (mode === "bold") {
+                    return `<b>${word.slice(0, boldLength)}</b>${word.slice(boldLength)}`;
+                } else {
+                    return `<span class="${mode}">${word}</span>`;
+                }
+            })
+            .join(' ');
+    }
+
+    async function processEpub() {
+        const input = document
+            .getElementById("epubInput")
+            .files[0];
+        const styleChoice = document
+            .getElementById("styleChoice")
+            .value;
+
+        if (!input) {
+            alert("Please upload an EPUB file first.");
+            return;
+        }
+
+        const zip = new JSZip();
+        await zip.loadAsync(input);
+
+        const files = Object.keys(zip.files);
+        let stylesheetPath = null;
+        let contentOpfPath = null;
+
+        for (const file of files) {
+            if (file.endsWith(".css"))
+                stylesheetPath = file;
+            if (file.endsWith("content.opf"))
+                contentOpfPath = file;
+        }
+
+        if (stylesheetPath && styleChoice !== "bold") {
+            let cssContent = await zip
+                .file(stylesheetPath)
+                .async("string");
+            const fontFileName = fontFiles[styleChoice]
+                .split('/')
+                .pop();
+            const fontFile = await (await fetch(fontFiles[styleChoice])).arrayBuffer();
+            const uint8Array = new Uint8Array(fontFile);
+            const base64Font = btoa(Array.from(uint8Array, byte => String.fromCharCode(byte)).join(''));
+
+            cssContent += `
+@font-face {
+    font-family: 'FastFont';
+    src: url("data:font/truetype;base64,${base64Font}") format('truetype');
+}
+                * { font-family: 'FastFont', sans-serif !important; }
+                `;
+
+            zip.file(stylesheetPath, cssContent);
+        }
+
+        for (const file of files) {
+            if (file.endsWith(".xhtml") || file.endsWith(".html")) {
+                let content = await zip
+                    .file(file)
+                    .async("string");
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(content, "text/html");
+
+                doc
+                    .querySelectorAll("p")
+                    .forEach(el => {
+                        const rawText = el.textContent;
+                        el.innerHTML = bionicReading(rawText, styleChoice);
+                    });
+
+                const serializer = new XMLSerializer();
+                zip.file(file, serializer.serializeToString(doc));
+            }
+        }
+
+        if (styleChoice !== "bold") {
+            const fontFileName = fontFiles[styleChoice]
+                .split('/')
+                .pop();
+            const fontBlob = await fetch(fontFiles[styleChoice]).then(res => res.blob());
+            zip.file(`OEBPS/fonts/${fontFileName}`, fontBlob);
+
+            if (contentOpfPath) {
+                let opfContent = await zip
+                    .file(contentOpfPath)
+                    .async("string");
+                const opfFontEntry = `<item id="font_${styleChoice}" href="fonts/${fontFileName}" media-type="application/x-font-ttf"/>`;
+                opfContent = opfContent.replace("</manifest>", `${opfFontEntry}\n</manifest>`);
+                zip.file(contentOpfPath, opfContent);
+            }
+        }
+
+        const newEpub = await zip.generateAsync({ type: "blob", mimeType: "application/epub+zip" });
+
+        const link = document.getElementById("downloadLink");
+        link.href = URL.createObjectURL(newEpub);
+        link.download = "bionic.epub";
+        link.style.display = "block";
+        link.innerText = "Download Bionic EPUB";
+    }
+</script>
