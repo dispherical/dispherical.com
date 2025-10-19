@@ -15,7 +15,7 @@ These laws are often written in vague or overly broad terms, and in practice, th
 **Note:** This list excludes regions where the relevant laws have been blocked by a court (i.e., under injunction) or have not yet gone into effect. It is actively maintained and updated as new legal developments occur.
 
 ## API
-You can make calls to `https://redblock.dispherical.com/test?ip=[ipv4/ipv6]`
+There is now an API. It is written in Rust and can handle about 7,000 requests per second. You can make calls to `https://redblock.dispherical.com/test?ip=[ipv4/ipv6]`
 
 Privacy: I don't log your IP address and I have no need to. They're checked against ipset and then deleted from memory
 
@@ -46,7 +46,7 @@ grep -v '^#' list.txt | grep -v '^[[:space:]]*$' > clean-list.txt
 
 {
   echo "create blocked6 hash:net family inet6 hashsize 4096 maxelem 8000000"
-  awk -F: '{if (NF>1) print "add -exist blocked6", $0}' clean-list.txt
+  awk -F: '{if ($0 ~ /^([0-9a-fA-F]{1,4}:){1,7}[0-9a-fA-F]{0,4}(\/[0-9]{1,3})?$/) print "add -exist blocked6", $0}' clean-list.txt
 } >> ipset-restore.txt
 
 sudo ipset restore < ipset-restore.txt
