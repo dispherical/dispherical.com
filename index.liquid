@@ -2,66 +2,99 @@
 layout: base.liquid
 ---
 <div class="h-card">
-<h1>
-howdy, i'm dispherical
-</h1>
-<p>I'm also known as <span class="p-name">Reiden</span> (<span class="p-gender">he/him</span>) in some places. I'm a secondary-schooler who lives in Georgia (state of). I'm a software engineer currently learning Rust and Ruby who currently has an obsession with Bun and PHP. I'm also a big fan of city-building games, especially City: Skylines. It's currently <time id="time">some time</time> where I am.</p>
-<p>I'm also a member of <a href="https://hackclub.com">Hack Club</a>.</p>
+  <h1>howdy, i'm <span class="p-nickname">dispherical</span></h1>
+  <p class="h-adr" style="display:none">
+    <span class="p-street-address">216 Atlanta Rd</span> <span class="p-extended-address">Ste F #2169</span>
+    <span class="p-locality">Cumming</span> <span class="p-region">GA</span> <span class="p-postal-code">30040</span>
+    <span class="p-country-name">USA</span>
+  </p>
+  <div class="p-category" style="display:none">secondary student</div>
+  <a class="u-url" href="https://dispherical.com" style="display:none"></a>
+  <span class="p-gender-identity" style="display:none">none</span>
 
- <small style="text-decoration: underline;" id="hoveroverme">Hover over me to make the map more visible</small>
-     {% renderTemplate "md" %}
+  <p class="p-note">
+    I'm also known as <span class="p-name">Reiden</span> (<span class="p-gender">he/him</span>) in some places. I'm a
+    secondary-schooler who lives in Georgia (state of). I'm a software developer currently learning Rust and Ruby who
+    currently has an obsession with Bun and PHP. I'm also a big fan of city-building games, especially City: Skylines.
+    It's currently <time id="time">some time</time> where I am.
+  </p>
+  <p>I'm also a member of <a href="https://hackclub.com">Hack Club</a>.</p>
+
+  <small style="text-decoration: underline;" id="hoveroverme">Hover over me to make the map more visible</small>
+    {% renderTemplate "md" %}
 ## Contact
 - GitHub: [dispherical](https://github.com/dispherical)
 - Keyoxide: [218E881D09E8AF46](https://keyoxide.org/13DECE56E3E7D8D8DF0871FF218E881D09E8AF46)
 - Mastodon: <a class="u-url" href="https://social.dino.icu/@dispherical" rel="me" >@dispherical@social.dino.icu</a>
 - Bluesky: [dispherical.com](https://bsky.app/profile/dispherical.com)
 {% endrenderTemplate %}
-<h2>
-  Listening to
-</h2>
-<script>
-  {% include "js/lyrics.js" %}
-</script>
-<div class="now-playing">
-  <div class="now-playing-content" style="display: flex;">
-    <div class="album-art">
-      <img src="https://cdn-images.dzcdn.net/images/cover/b9a0a749f03e877740c65e6c15d89610/1000x1000-000000-80-0-0.jpg" alt="Album art for Com Medo! - EP">
+  <h2>Listening to</h2>
+  <script>
+    {% include "js/lyrics.js" %}
+  </script>
+  <div class="now-playing">
+    <div class="now-playing-content" style="display: flex;">
+      <div class="album-art">
+        <img
+          src="https://cdn-images.dzcdn.net/images/cover/b9a0a749f03e877740c65e6c15d89610/1000x1000-000000-80-0-0.jpg"
+          alt="Album art for Com Medo! - EP"
+        >
+      </div>
+      <div class="track-info">
+        <div class="track-name">COM MEDO!</div>
+        <div class="artist-name">Sayfalse &amp; Scythermane</div>
+        <div class="album-name">Com Medo! - EP</div>
+        <div class="track-lyric" id="currentLyric">...</div>
+      </div>
+      <img class="lastfm-icon" src="https://cdn.simpleicons.org/last.fm/black">
     </div>
-    <div class="track-info">
-      <div class="track-name">COM MEDO!</div>
-      <div class="artist-name">Sayfalse &amp; Scythermane</div>
-      <div class="album-name">Com Medo! - EP</div>
-      <div class="track-lyric" id="currentLyric">...</div>
-    
-    </div>
-<img class="lastfm-icon" src="https://cdn.simpleicons.org/last.fm/black">
+    <p style="display: none;">Nothing playing right now</p>
   </div>
-  <p style="display: none;">Nothing playing right now</p>
-</div>
   <div style="margin-top:1em;">
-  <button id="expandLyricsBtn" onclick="toggleLyricsExpanded()" style="display:none;">Show lyrics</button>
-  <div id="expandLyricsBox" style="display:none; background:#f5f5f5; border-radius:8px; margin-top:8px; padding:12px; max-height:300px; overflow:auto;"></div>
-</div>
-<h2>Buttons</h2>
-<a href="/88x31"class="badge"><img src="https://cdn.dispherical.com/88x31.png" alt="dispherical.com" title="dispherical.com"> </a>
-<a href="https://bomberfish.ca" target="_blank" class="badge"><img src="https://bomberfish.ca/buttons/button.gif" alt="BomberFish" title="BomberFish"> </a>
-<a href="https://poyoweb.org/" target="_blank" class="badge"><img src="https://cdn.k0dy.xyz/assets/buttons/indieseas.png" alt="IndieSeas" title="IndieSeas"></a>
-<a href="https://hackclub.com" target="_blank" class="badge"><img src="https://cdn.k0dy.xyz/assets/buttons/hackclub.png" alt="Hack Club" title="Hack Club"></a>
-<a href="https://guides.hackclub.app" target="_blank" class="badge"><img src="https://cdn.k0dy.xyz/assets/buttons/nest.png" alt="Nest" title="Nest"></a>
+    <button id="expandLyricsBtn" onclick="toggleLyricsExpanded()" style="display:none;">Show lyrics</button>
+    <div
+      id="expandLyricsBox"
+      style="display:none; background:#f5f5f5; border-radius:8px; margin-top:8px; padding:12px; max-height:300px; overflow:auto;"
+    ></div>
+  </div>
+  <h2>Buttons</h2>
+  <a href="/88x31" class="badge"
+    ><img src="https://cdn.dispherical.com/88x31.png" alt="dispherical.com" title="dispherical.com">
+  </a>
+  <a href="https://bomberfish.ca" target="_blank" class="badge"
+    ><img src="https://bomberfish.ca/buttons/button.gif" alt="BomberFish" title="BomberFish">
+  </a>
+  <a href="https://poyoweb.org/" target="_blank" class="badge"
+    ><img src="https://cdn.k0dy.xyz/assets/buttons/indieseas.png" alt="IndieSeas" title="IndieSeas"
+  ></a>
+  <a href="https://hackclub.com" target="_blank" class="badge"
+    ><img src="https://cdn.k0dy.xyz/assets/buttons/hackclub.png" alt="Hack Club" title="Hack Club"
+  ></a>
+  <a href="https://guides.hackclub.app" target="_blank" class="badge"
+    ><img src="https://cdn.k0dy.xyz/assets/buttons/nest.png" alt="Nest" title="Nest"
+  ></a>
 
-<h3>Cool People</h3>
-<small>In no particular order</small>
-{% renderTemplate "md" %}
-[parkalex.dev](https://parkalex.dev/), [radioblahaj.com](https://www.radioblahaj.com/),
-[h.hackclub.app](https://h.hackclub.app/), [sfernandez.dev](https://sfernandez.dev/),
-[saahild.com](https://saahild.com/retro/), [reeseric.ci](https://reeseric.ci/), [whatware.net](https://whatware.net), [eeriergosling.dev](https://eeriergosling.dev/), [owo.bet](https://owo.bet), [jay.loves-being-a.dev](https://jay.loves-being-a.dev/), [avocado-ship-it.github.io](https://avocado-ship-it.github.io/), [3kh0.net](https://3kh0.net/), [djlaser.dev](https://djlaser.dev), [alex.sirota.org](https://alex.sirota.org), [ella.ad](https://ella.ad), [cyteon.dev](https://cyteon.dev), [ssmidge.xyz](https://ssmidge.xyz/)
-{% endrenderTemplate %}
+  <h3>Cool People</h3>
+  <small>In no particular order</small>
+  {% renderTemplate "md" %}
+  [parkalex.dev](https://parkalex.dev/), [radioblahaj.com](https://www.radioblahaj.com/),
+  [h.hackclub.app](https://h.hackclub.app/), [sfernandez.dev](https://sfernandez.dev/),
+  [saahild.com](https://saahild.com/retro/), [reeseric.ci](https://reeseric.ci/), [whatware.net](https://whatware.net),
+  [eeriergosling.dev](https://eeriergosling.dev/), [owo.bet](https://owo.bet),
+  [jay.loves-being-a.dev](https://jay.loves-being-a.dev/),
+  [avocado-ship-it.github.io](https://avocado-ship-it.github.io/), [3kh0.net](https://3kh0.net/),
+  [djlaser.dev](https://djlaser.dev), [alex.sirota.org](https://alex.sirota.org), [ella.ad](https://ella.ad),
+  [cyteon.dev](https://cyteon.dev), [ssmidge.xyz](https://ssmidge.xyz/)
+  {% endrenderTemplate %}
 
-<script>
-  function resetTime() {
-    document.querySelector("#time").innerHTML = new Date().toLocaleTimeString("en-US", { timeZone: "America/New_York", timeZoneName: "short" })
-  }
-  resetTime()
-  setInterval(resetTime, 1000)
-</script>
+  <script>
+    function resetTime() {
+      document.querySelector('#time').innerHTML = new Date().toLocaleTimeString('en-US', {
+        timeZone: 'America/New_York',
+        timeZoneName: 'short',
+      });
+    }
+    resetTime();
+    setInterval(resetTime, 1000);
+  </script>
 </div>
