@@ -15,7 +15,7 @@ These laws are often written in vague or overly broad terms, and in practice, th
 **Note:** This list excludes regions where the relevant laws have been blocked by a court (i.e., under injunction) or have not yet gone into effect. It is actively maintained and updated as new legal developments occur.
 
 ## API
-There is now an API. It is written in Rust and can handle about 7,000 requests per second. You can make calls to `https://redblock.dispherical.com/test?ip=[ipv4/ipv6]`
+There is now an API. It is written in Rust and (as of testing) can handle 220,274 requests per second. You can make calls to `https://redblock.dispherical.com/test?ip=[ipv4/ipv6]`
 
 Privacy Policy: I don't log your IP address and I have no need to. They're checked against ipset and then deleted from memory. [You can view the code for yourself here](https://github.com/dispherical/redblock/blob/main/api/src/main.rs).
 
@@ -56,9 +56,7 @@ sudo ipset test blocked[4/6] [ip]
 ```
 
 ## Download
-You may download the list from [https://cdn.dispherical.com/redblock/list.txt](https://cdn.dispherical.com/redblock/list.txt). There is also a gzipped version at [https://cdn.dispherical.com/redblock/list.txt.gz](https://cdn.dispherical.com/redblock/list.txt.gz)
-
-**Note:** The non-gzipped version may be discontinued if it costs too much to host.
+You may download the list from [https://cdn.dispherical.com/redblock/list.txt](https://cdn.dispherical.com/redblock/list.txt).
 
 Below is the header from the list:
 {% endrenderTemplate %}
