@@ -41,7 +41,7 @@ grep -v '^#' list.txt | grep -v '^[[:space:]]*$' > clean-list.txt
 
 {
   echo "create blocked4 hash:net family inet hashsize 4096 maxelem 8000000"
-  awk '/\./{print "add -exist blocked4", $0}' clean-list.txt
+  awk '/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\/[0-9]+$/ {print "add -exist blocked4", $0}' clean-list.txt
 } > ipset-restore.txt
 
 {
