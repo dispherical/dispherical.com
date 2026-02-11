@@ -1,10 +1,23 @@
 const cheerio = require('cheerio');
 const icons = require("./icons")
+const esbuild = require("esbuild");
 module.exports = async function (eleventyConfig) {
   const { RenderPlugin } = await import("@11ty/eleventy");
   eleventyConfig.addPlugin(RenderPlugin);
 
+  eleventyConfig.on("eleventy.before", async () => {
+    await esbuild.build({
+      entryPoints: ["node_modules/@ffmpeg/ffmpeg/dist/esm/worker.js"],
+      bundle: true,
+      format: "esm",
+      outfile: "_site/js/ffmpeg-worker.js",
+    });
+  });
+
+  eleventyConfig.addPassthroughCopy("js");
+
   eleventyConfig.addTransform("externalFavicon", async function (content, outputPath) {
+    return content;
     if (outputPath && outputPath.endsWith(".html")) {
       const $ = cheerio.load(content);
       const anchors = $("a[href^='http']").toArray();

@@ -1,0 +1,53 @@
+---
+layout: base.liquid
+permalink: /tools/filters/index.html
+title: TikTok filters but without lightroom
+description: Experimental filters in the browser using ffmpeg with wasm.
+---
+<h1>TikTok filters but without Lightroom</h1>
+<p>Experimental filters in the browser using ffmpeg with wasm.</p>
+<h3>Privacy notice</h3>
+<p>Nothing leaves your device! Isn't that neat.</p>
+<h3>Note about phone photos</h3>
+<p>
+  You may find it easier to use raw photos from your device. You'll need to convert it from whatever format into a
+  16-bit tiff using darktable. Without this step, it may turn out rather green.
+</p>
+
+<button id="ffmpeg-load">Load ffmpeg (~32 MB)</button>
+
+<div id="ffmpeg-loaded" style="display:none;">
+  <input type="file" id="ffmpeg-file" accept="image/*,image/dng,image/x-adobe-dng">
+  <div style="margin-top:0.75rem;">
+    <label for="ffmpeg-filters">Filters</label>
+    <select
+      id="ffmpeg-filters"
+      multiple
+      size="5"
+      style="display:block;min-width:18rem;max-width:100%;margin-top:0.25rem;"
+    >
+      <option value="retro-1">Retro 1</option>
+      <option value="film">Film</option>
+      <option value="disposable-camera">Disposable Camera</option>
+    </select>
+  </div>
+  <div id="ffmpeg-controls"></div>
+  <button id="ffmpeg-apply" style="margin-top:0.75rem;">Apply filters</button>
+  <div style="margin-top:1rem;">
+    <img id="ffmpeg-image" alt="Filtered output" style="display:none;max-width:100%;height:auto;">
+    <div style="margin-top:0.5rem;">
+      <a id="ffmpeg-download" style="display:none;" href="#">Download</a>
+    </div>
+  </div>
+  <p id="ffmpeg-message"></p>
+</div>
+
+<script type="module" src="/js/filters.js"></script>
+
+<style>
+  #map {
+    display: none !important;
+  }
+</style>
+<br>
+<br>

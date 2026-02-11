@@ -46,6 +46,7 @@
     <meta name="language" content="English">
     <meta name="revisit-after" content="2 days">
     <meta name="author" content="Dispherical">
+    <link href="https://blog.dispherical.com/feed/feed.xml" type="application/atom+xml" rel="alternate"/>
     <style>
       .material-symbols-outlined {
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -118,19 +119,19 @@
             if (typeof init == 'function') init();
             const hoverElement = document.querySelector('#hoveroverme');
             const mapElement = document.querySelector('#map');
-
-            hoverElement.addEventListener('mouseenter', () => {
-              hoverElement.textContent = '(let go to return back to normal)';
-              mapElement.style.transition = 'opacity 0.2s ease';
-              mapElement.style.opacity = '0.8';
-              hoverElement.style.opacity = '0.9';
-            });
-
-            hoverElement.addEventListener('mouseleave', () => {
-              hoverElement.textContent = 'Hover over me to make the map more visible';
-              mapElement.style.transition = 'opacity 0.2s ease';
-              mapElement.style.opacity = '0.1';
-            });
+            if (hoverElement && mapElement) {
+              hoverElement.addEventListener('mouseenter', () => {
+                hoverElement.textContent = '(let go to return back to normal)';
+                mapElement.style.transition = 'opacity 0.2s ease';
+                mapElement.style.opacity = '0.8';
+                hoverElement.style.opacity = '0.9';
+              });
+              hoverElement.addEventListener('mouseleave', () => {
+                hoverElement.textContent = 'Hover over me to make the map more visible';
+                mapElement.style.transition = 'opacity 0.2s ease';
+                mapElement.style.opacity = '0.1';
+              });
+            }
           }, 2000);
         }
       });
@@ -190,19 +191,19 @@
       });
       const hoverElement = document.querySelector('#hoveroverme');
       const mapElement = document.querySelector('#map');
-
-      hoverElement.addEventListener('mouseenter', () => {
-        hoverElement.textContent = '(let go to return back to normal)';
-        mapElement.style.transition = 'opacity 0.2s ease';
-        mapElement.style.opacity = '0.8';
-        hoverElement.style.opacity = '0.9';
-      });
-
-      hoverElement.addEventListener('mouseleave', () => {
-        hoverElement.textContent = 'Hover over me to make the map more visible';
-        mapElement.style.transition = 'opacity 0.2s ease';
-        mapElement.style.opacity = '0.1';
-      });
+      if (hoverElement && mapElement) {
+        hoverElement.addEventListener('mouseenter', () => {
+          hoverElement.textContent = '(let go to return back to normal)';
+          mapElement.style.transition = 'opacity 0.2s ease';
+          mapElement.style.opacity = '0.8';
+          hoverElement.style.opacity = '0.9';
+        });
+        hoverElement.addEventListener('mouseleave', () => {
+          hoverElement.textContent = 'Hover over me to make the map more visible';
+          mapElement.style.transition = 'opacity 0.2s ease';
+          mapElement.style.opacity = '0.1';
+        });
+      }
     </script>
   </body>
 </html>

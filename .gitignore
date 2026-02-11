@@ -142,3 +142,4 @@ vite.config.ts.timestamp-*
 
 _site
 icons
+.DS_Store
