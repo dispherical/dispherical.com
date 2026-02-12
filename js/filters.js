@@ -47,7 +47,8 @@ function developRawToTiff(fileBytes) {
   return new Promise((resolve, reject) => {
     try {
       ImageMagick.read(fileBytes, (image) => {
-        image.
+        image.autoOrient()
+
         image.write(MagickFormat.Tiff, (data) => {
           resolve(new Uint8Array(data));
         });
