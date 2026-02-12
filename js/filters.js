@@ -360,7 +360,7 @@ applyBtn.addEventListener("click", async () => {
     let fileData = await fetchFile(file);
 
     if (isRawFile(file.name)) {
-      setMessage("Developing raw file with ImageMagick…");
+      setMessage("Developing raw file with ImageMagick...");
       await ensureMagickLoaded();
       fileData = await developRawToTiff(new Uint8Array(fileData));
       setMessage("Raw developed to TIFF.");
