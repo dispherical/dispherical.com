@@ -90,7 +90,7 @@ const FILTERS = {
     defaultBlend: 0.6,
     effects: [
       { id: "denoise", label: "Denoise", build: () => "hqdn3d=1.0:1.0:8:8" },
-      { id: "eq", label: "Brightness / Gamma / Contrast", build: () => "eq=brightness=0.05:gamma=1.12:contrast=1.03" },
+      //    { id: "eq", label: "Brightness / Gamma / Contrast", build: () => "eq=brightness=0.05:gamma=1.12:contrast=1.03" },
       {
         id: "noise",
         label: "Noise",
@@ -122,6 +122,26 @@ const FILTERS = {
       },
       { id: "boxblur", label: "Box Blur", build: () => "boxblur=1:1" },
       { id: "vignette", label: "Vignette", build: () => "vignette=angle=PI/6" },
+    ],
+  },
+  cyberpunk: {
+    name: "Cyberpunk",
+    lut: { url: "https://cdn.dispherical.com/lut/cyberpunk.cube", file: "cyberpunk.cube" },
+    defaultBlend: 0.6,
+    effects: [
+      { id: "denoise", label: "Denoise", build: () => "hqdn3d=1.0:1.0:8:8" },
+      //  { id: "eq", label: "Brightness / Gamma / Contrast", build: () => "eq=brightness=0.05:gamma=1.12:contrast=1.03" },
+      {
+        id: "noise",
+        label: "Noise",
+        hasSlider: true,
+        sliderMin: 0,
+        sliderMax: 40,
+        sliderStep: 1,
+        sliderDefault: 10,
+        build: (v) => `noise=alls=${v}:allf=t`,
+      },
+      { id: "boxblur", label: "Box Blur", build: () => "boxblur=1:1" },
     ],
   },
 };

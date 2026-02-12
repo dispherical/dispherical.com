@@ -8,16 +8,19 @@ description: Experimental filters in the browser using ffmpeg with wasm.
 <p>Experimental filters in the browser using ffmpeg with wasm.</p>
 <h3>Privacy notice</h3>
 <p>Nothing leaves your device! Isn't that neat.</p>
-<h3>Note about phone photos</h3>
+<h3>Raw images!</h3>
 <p>
-  You may find it easier to use raw photos from your device. You'll need to convert it from whatever format into a
-  16-bit tiff using darktable. Without this step, it may turn out rather green.
+  This tool supports raw images from many cameras. Try uploading one!
 </p>
 
 <button id="ffmpeg-load">Load ffmpeg (~32 MB)</button>
 
 <div id="ffmpeg-loaded" style="display:none;">
-  <input type="file" id="ffmpeg-file" accept="image/*,.3fr,.ari,.arw,.bay,.braw,.crw,.cr2,.cr3,.cap,.data,.dcs,.dcr,.dng,.drf,.eip,.erf,.fff,.gpr,.iiq,.k25,.kdc,.mdc,.mef,.mos,.mrw,.nef,.nrw,.obm,.orf,.pef,.ptx,.pxn,.r3d,.raf,.raw,.rwl,.rw2,.rwz,.sr2,.srf,.srw,.tif,.x3f">
+  <input
+    type="file"
+    id="ffmpeg-file"
+    accept="image/*,.3fr,.ari,.arw,.bay,.braw,.crw,.cr2,.cr3,.cap,.data,.dcs,.dcr,.dng,.drf,.eip,.erf,.fff,.gpr,.iiq,.k25,.kdc,.mdc,.mef,.mos,.mrw,.nef,.nrw,.obm,.orf,.pef,.ptx,.pxn,.r3d,.raf,.raw,.rwl,.rw2,.rwz,.sr2,.srf,.srw,.tif,.x3f"
+  >
   <div style="margin-top:0.75rem;">
     <label for="ffmpeg-filters">Filters</label>
     <select
@@ -29,6 +32,7 @@ description: Experimental filters in the browser using ffmpeg with wasm.
       <option value="retro-1">Retro 1</option>
       <option value="film">Film</option>
       <option value="disposable-camera">Disposable Camera</option>
+      <option value="cyberpunk">Cyberpunk</option>
     </select>
   </div>
   <div id="ffmpeg-controls"></div>
