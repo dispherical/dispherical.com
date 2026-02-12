@@ -1,5 +1,63 @@
 import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/classes.js";
 import { fetchFile } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js";
+import {
+  initializeImageMagick,
+  ImageMagick,
+  MagickFormat,
+} from "/js/magick-wasm.js";
+
+const RAW_EXTENSIONS = new Set([
+  "3fr",
+  "ari", "arw",
+  "bay",
+  "braw", "crw", "cr2", "cr3",
+  "cap",
+  "data", "dcs", "dcr", "dng",
+  "drf",
+  "eip", "erf",
+  "fff",
+  "gpr",
+  "iiq",
+  "k25", "kdc",
+  "mdc", "mef", "mos", "mrw",
+  "nef", "nrw",
+  "obm", "orf",
+  "pef", "ptx", "pxn",
+  "r3d", "raf", "raw", "rwl", "rw2", "rwz",
+  "sr2", "srf", "srw",
+  "tif",
+  "x3f",
+]);
+
+let magickReady = false;
+
+async function ensureMagickLoaded() {
+  if (magickReady) return;
+  const wasmBytes = await fetch("/js/magick.wasm").then((r) => r.arrayBuffer());
+  await initializeImageMagick(new Uint8Array(wasmBytes));
+  magickReady = true;
+}
+
+function isRawFile(name) {
+  const ext = (name || "").split(".").pop().toLowerCase();
+  return RAW_EXTENSIONS.has(ext);
+}
+
+function developRawToTiff(fileBytes) {
+  return new Promise((resolve, reject) => {
+    try {
+      ImageMagick.read(fileBytes, (image) => {
+        image.
+        image.write(MagickFormat.Tiff, (data) => {
+          resolve(new Uint8Array(data));
+        });
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 
 const ffmpeg = new FFmpeg();
 const BASE_URL = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
@@ -298,7 +356,16 @@ applyBtn.addEventListener("click", async () => {
     const baseName = sanitizeBaseName(file.name);
     const outputName = `${baseName}-filtered.jpg`;
 
-    await ffmpeg.writeFile(inputName, await fetchFile(file));
+    let fileData = await fetchFile(file);
+
+    if (isRawFile(file.name)) {
+      setMessage("Developing raw file with ImageMagick…");
+      await ensureMagickLoaded();
+      fileData = await developRawToTiff(new Uint8Array(fileData));
+      setMessage("Raw developed to TIFF.");
+    }
+
+    await ffmpeg.writeFile(inputName, fileData);
 
     let currentInput = inputName;
     for (let i = 0; i < selected.length; i += 1) {

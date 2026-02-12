@@ -12,12 +12,25 @@ module.exports = async function (eleventyConfig) {
       format: "esm",
       outfile: "_site/js/ffmpeg-worker.js",
     });
+
+    await esbuild.build({
+      entryPoints: ["node_modules/@imagemagick/magick-wasm/dist/index.js"],
+      bundle: true,
+      format: "esm",
+      outfile: "_site/js/magick-wasm.js",
+    });
+
+    const fs = require("fs");
+    fs.copyFileSync(
+      "node_modules/@imagemagick/magick-wasm/dist/magick.wasm",
+      "_site/js/magick.wasm"
+    );
   });
 
   eleventyConfig.addPassthroughCopy("js");
 
   eleventyConfig.addTransform("externalFavicon", async function (content, outputPath) {
-    return content;
+    //return content;
     if (outputPath && outputPath.endsWith(".html")) {
       const $ = cheerio.load(content);
       const anchors = $("a[href^='http']").toArray();
