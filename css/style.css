@@ -7,8 +7,11 @@
   --dark-anchor-color: #8aadf4;
   --border-color: #5f6267;
   --title-size: 48px;
-  --max-width: 33rem;
+  --max-width: 40rem;
   --border-width: 1px;
+}
+* {
+  transition: all .3s ease-in-out;
 }
 html {
   font-family: Nunito, "Adwaita Sans", Inter, "SF Pro Text", "SF Pro";

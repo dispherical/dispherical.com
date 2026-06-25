@@ -2,31 +2,27 @@
 layout: base.liquid
 ---
 <div class="h-card">
-  <h1>howdy, i'm <span class="p-nickname">dispherical</span></h1>
-  <p class="h-adr" style="display:none">
-    <span class="p-street-address">216 Atlanta Rd</span> <span class="p-extended-address">Ste F #2169</span>
-    <span class="p-locality">Cumming</span> <span class="p-region">GA</span> <span class="p-postal-code">30040</span>
-    <span class="p-country-name">USA</span>
-  </p>
+  <h1><span class="p-nickname">dispherical</span>!</h1>
+
   <div class="p-category" style="display:none">computer science major</div>
   <a class="u-url" href="https://dispherical.com" style="display:none"></a>
   <span class="p-gender-identity" style="display:none">male</span>
 
   <p class="p-note">
-    I'm also known as <span class="p-name">Reiden</span> (<span class="p-gender">he/him</span>) in some places. I'm a
-    compsci major who lives in Georgia (state of). I'm a software developer currently learning Rust and Ruby who
-    currently has an obsession with Bun and PHP. I'm also a big fan of city-building games, especially City: Skylines.
-    It's currently <time id="time">some time</time> where I am.
+    Hello, this is my website. I am rather obsessed with transit and logistics in general. I'm also a computer science major.
   </p>
 
   <small style="text-decoration: underline;" id="hoveroverme">Hover over me to make the map more visible</small>
-    {% renderTemplate "md" %}
-## Contact
-- GitHub: [dispherical](https://github.com/dispherical)
-- Keyoxide: [218E881D09E8AF46](https://keyoxide.org/13DECE56E3E7D8D8DF0871FF218E881D09E8AF46)
-- Mastodon: <a class="u-url" href="https://social.dino.icu/@dispherical" rel="me" >@dispherical@social.dino.icu</a>
-- Bluesky: [dispherical.com](https://bsky.app/profile/dispherical.com)
-{% endrenderTemplate %}
+<h2 id="contact">Contact</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/dispherical">dispherical</a> ({{stars}} stars!)</li>
+<li>Bluesky: <a href="https://bsky.app/profile/dispherical.com">dispherical.com</a></li>
+<li>Twitter/X: <a href="https://x.com/dispherical84">@dispherical84</a></li>
+<li>Email: <span id="email">
+      <a onclick="decryptEmail(event)" href="#">click to decode</a>
+    </span></li>
+</ul>
+
   <h2>Listening to</h2>
   <script>
     {% include "js/lyrics.js" %}
@@ -36,14 +32,14 @@ layout: base.liquid
       <div class="album-art">
         <img
           src="https://cdn-images.dzcdn.net/images/cover/b9a0a749f03e877740c65e6c15d89610/1000x1000-000000-80-0-0.jpg"
-          alt="Album art for Com Medo! - EP"
+          alt=""
         >
       </div>
       <div class="track-info">
-        <div class="track-name">COM MEDO!</div>
-        <div class="artist-name">Sayfalse &amp; Scythermane</div>
-        <div class="album-name">Com Medo! - EP</div>
-        <div class="track-lyric" id="currentLyric">...</div>
+        <div class="track-name"></div>
+        <div class="artist-name"></div>
+        <div class="album-name"></div>
+        <div class="track-lyric" id="currentLyric"></div>
       </div>
       <img class="lastfm-icon" src="https://cdn.simpleicons.org/last.fm/black">
     </div>
@@ -66,11 +62,11 @@ layout: base.liquid
   <a href="https://poyoweb.org/" target="_blank" class="badge"
     ><img src="https://cdn.dispherical.com/assets/buttons/indieseas.png" alt="IndieSeas" title="IndieSeas"
   ></a>
-  <a href="https://guides.hackclub.app" target="_blank" class="badge"
+  <!--<a href="https://guides.hackclub.app" target="_blank" class="badge"
     ><img src="https://cdn.dispherical.com/assets/buttons/nest.png" alt="Nest" title="Nest"
-  ></a>
+  ></a>-->
  <a href="https://chrisburnell.com/note/eleventy-animated-88x31/" target="_blank" class="badge"
-    ><img src="https://cdn.dispherical.com/assets/buttons/built-with-eleventy.gif" alt="Nest" title="Nest"
+    ><img src="https://cdn.dispherical.com/assets/buttons/built-with-eleventy.gif" alt="'Built with Eleventy', with a balloon rising to nowhere." title="Nest"
   ></a>
   <h3>Cool People</h3>
   <small>In no particular order</small>
@@ -82,17 +78,14 @@ layout: base.liquid
   [jay.loves-being-a.dev](https://jay.loves-being-a.dev/),
   [avocado-ship-it.github.io](https://avocado-ship-it.github.io/), [3kh0.net](https://3kh0.net/),
   [djlaser.dev](https://djlaser.dev), [alex.sirota.org](https://alex.sirota.org), [ella.ad](https://ella.ad),
-  [cyteon.dev](https://cyteon.dev), [ssmidge.xyz](https://ssmidge.xyz/)
+  [cyteon.dev](https://cyteon.dev), [ssmidge.xyz](https://ssmidge.xyz/), [bomberfish.ca](https://bomberfish.ca/)
   {% endrenderTemplate %}
 
-  <script>
-    function resetTime() {
-      document.querySelector('#time').innerHTML = new Date().toLocaleTimeString('en-US', {
-        timeZone: 'America/New_York',
-        timeZoneName: 'short',
-      });
-    }
-    resetTime();
-    setInterval(resetTime, 1000);
-  </script>
+
 </div>
+<script>
+  window.emailData = {{ email | json }}
+</script>
+<script>
+  {% include "js/email.js" %}
+</script>

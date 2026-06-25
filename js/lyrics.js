@@ -2,7 +2,6 @@ window.validLyrics = "";
 window.plainLyrics = "";
 
 let currentTrackId = "";
-const SONG_CHECK_INTERVAL = 5000;
 
 const BASE_URL = "https://loc.david.hackclub.app"
 function censorText(text) {
@@ -93,19 +92,6 @@ async function loadLyrics(artist, track) {
 
 let localTimeMs = 0;
 let lastSyncTime = 0;
-const SYNC_INTERVAL = 10000;
-
-async function syncWithServer() {
-  if (location.pathname !== "/") return;
-  try {
-    const response = await fetch(BASE_URL + "/getduration?cache=" + Math.random());
-    const data = await response.json();
-    localTimeMs = data.elapsed;
-    lastSyncTime = performance.now();
-  } catch (error) {
-    console.error("Error syncing with server:", error);
-  }
-}
 
 function getCurrentTime() {
   if (location.pathname !== "/") return;
@@ -116,62 +102,69 @@ function getCurrentTime() {
   return (localTimeMs + elapsedSinceSync) + 2000;
 }
 
-async function showCurrentLyric() {
+function showCurrentLyric() {
   if (location.pathname !== "/") return;
-  const now = performance.now();
-  if (lastSyncTime === 0 || now - lastSyncTime > SYNC_INTERVAL) {
-    await syncWithServer();
-  }
-
   const currentMs = getCurrentTime();
   document.querySelector("#currentLyric").innerText =
     currentMs ? getLyricAtTime(window.validLyrics, currentMs) : "Syncing...";
 }
 
-async function fetchSongInfo() {
-  if (location.pathname !== "/") return;
-  try {
-    const response = await fetch(BASE_URL + "/song");
-    const data = await response.json();
+async function applySongInfo(data) {
+  const trackId = `${data.artist}-${data.track}-${data.album}`;
+  if (trackId === currentTrackId) return;
+  currentTrackId = trackId;
 
-    const trackId = `${data.artist}-${data.track}-${data.album}`;
+  const trackNameElement = document.querySelector(".track-name");
+  const artistNameElement = document.querySelector(".artist-name");
+  const albumNameElement = document.querySelector(".album-name");
+  const albumArtElement = document.querySelector(".album-art img");
+  const nowPlayingElement = document.querySelector(".now-playing-content");
+  const nothingPlayingElement = document.querySelector(".now-playing p");
 
-    if (trackId !== currentTrackId) {
-      currentTrackId = trackId;
+  if (data.track) {
+    if (trackNameElement) trackNameElement.innerText = data.track;
+    if (artistNameElement) artistNameElement.innerText = data.artist;
+    if (albumNameElement) albumNameElement.innerText = data.album;
 
-      const trackNameElement = document.querySelector(".track-name");
-      const artistNameElement = document.querySelector(".artist-name");
-      const albumNameElement = document.querySelector(".album-name");
-      const albumArtElement = document.querySelector(".album-art img");
-      const nowPlayingElement = document.querySelector(".now-playing-content");
-      const nothingPlayingElement = document.querySelector(".now-playing p");
-
-      if (data.track) {
-        if (trackNameElement) trackNameElement.innerText = data.track;
-        if (artistNameElement) artistNameElement.innerText = data.artist;
-        if (albumNameElement) albumNameElement.innerText = data.album;
-
-        if (albumArtElement && data.image) {
-          albumArtElement.src = data.image;
-          albumArtElement.alt = `Album art for ${data.album}`;
-        }
-
-        if (nowPlayingElement) nowPlayingElement.style.display = "flex";
-        if (nothingPlayingElement) nothingPlayingElement.style.display = "none";
-
-        lastSyncTime = 0;
-        document.querySelector("#currentLyric").innerText = "Loading lyrics...";
-        await loadLyrics(data.artist, data.track);
-        await syncWithServer();
-      } else {
-        if (nowPlayingElement) nowPlayingElement.style.display = "none";
-        if (nothingPlayingElement) nothingPlayingElement.style.display = "block";
-        document.querySelector("#currentLyric").innerText = "No track playing";
-      }
+    if (albumArtElement && data.image) {
+      albumArtElement.src = data.image;
+      albumArtElement.alt = `Album art for ${data.album}`;
     }
-  } catch (error) {
-    console.error("Error fetching song info:", error);
+
+    if (nowPlayingElement) nowPlayingElement.style.display = "flex";
+    if (nothingPlayingElement) nothingPlayingElement.style.display = "none";
+
+    document.querySelector("#currentLyric").innerText = "Loading lyrics...";
+    localTimeMs = data.elapsed;
+    lastSyncTime = performance.now();
+    await loadLyrics(data.artist, data.track);
+  } else {
+    if (nowPlayingElement) nowPlayingElement.style.display = "none";
+    if (nothingPlayingElement) nothingPlayingElement.style.display = "block";
+    document.querySelector("#currentLyric").innerText = "No track playing";
   }
+}
+
+let songSocket = null;
+
+function connectSongSocket() {
+  if (location.pathname !== "/") return;
+  const wsUrl = BASE_URL.replace(/^http/, "ws") + "/ws";
+  songSocket = new WebSocket(wsUrl);
+
+  songSocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === "song") {
+      applySongInfo(data);
+    } else if (data.type === "sync") {
+      localTimeMs = data.elapsed;
+      lastSyncTime = performance.now();
+    }
+  };
+
+  songSocket.onclose = () => {
+    setTimeout(connectSongSocket, 2000);
+  };
 }
 function updateExpandButton() {
   const expandBtn = document.getElementById("expandLyricsBtn");
@@ -256,11 +249,9 @@ function stopSyncedLyricsAnimation() {
   if (gsapInterval) clearInterval(gsapInterval);
   gsapInterval = null;
 }
-async function init() {
-  await fetchSongInfo();
-
+function init() {
+  connectSongSocket();
   setInterval(showCurrentLyric, 250);
-  setInterval(fetchSongInfo, SONG_CHECK_INTERVAL);
 }
 
 init();
