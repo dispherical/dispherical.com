@@ -60,7 +60,7 @@ module.exports = async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("js");
 
   eleventyConfig.addTransform("externalFavicon", async function (content, outputPath) {
-    if (process.env.NODE_ENV != "production") return content;
+    //if (process.env.NODE_ENV != "production") return content;
     if (outputPath && outputPath.endsWith(".html")) {
       const $ = cheerio.load(content);
       const anchors = $("a[href^='http']").toArray();
