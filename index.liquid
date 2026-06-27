@@ -18,6 +18,8 @@ layout: base.liquid
 <li>GitHub: <a href="https://github.com/dispherical">dispherical</a> ({{stars}} stars!)</li>
 <li>Bluesky: <a href="https://bsky.app/profile/dispherical.com">dispherical.com</a></li>
 <li>Twitter/X: <a href="https://x.com/dispherical84">@dispherical84</a></li>
+<li>Last.fm: <a href="https://www.last.fm/user/dispherical">@dispherical</a></li>
+
 <li>Email: <span id="email">
       <a onclick="decryptEmail(event)" href="#">click to decode</a>
     </span></li>
@@ -41,7 +43,7 @@ layout: base.liquid
         <div class="album-name"></div>
         <div class="track-lyric" id="currentLyric"></div>
       </div>
-      <img class="lastfm-icon" src="https://cdn.simpleicons.org/last.fm/black">
+      <img class="lastfm-icon" src="https://cdn.simpleicons.org/spotify/black" alt="Spotify logo">
     </div>
     <p style="display: none;">Nothing playing right now</p>
   </div>
@@ -49,24 +51,25 @@ layout: base.liquid
     <button id="expandLyricsBtn" onclick="toggleLyricsExpanded()" style="display:none;">Show lyrics</button>
     <div
       id="expandLyricsBox"
-      style="display:none; background:#f5f5f5; border-radius:8px; margin-top:8px; padding:12px; max-height:300px; overflow:auto;"
+      class="expand-lyrics-box"
+      style="display:none;"
     ></div>
   </div>
   <h2>Buttons</h2>
   <a href="/88x31" class="badge"
-    ><img src="https://cdn.dispherical.com/88x31.png" alt="dispherical.com" title="dispherical.com">
+    ><img src="https://cdn.dispherical.com/88x31.png" alt="dispherical with a colourful line underlining it and a cat to the right" title="dispherical.com">
   </a>
   <a href="https://bomberfish.ca" target="_blank" class="badge"
-    ><img src="https://bomberfish.ca/buttons/button.gif" alt="BomberFish" title="BomberFish">
+    ><img src="https://bomberfish.ca/buttons/button.gif" alt="BomberFish 88x31 button" title="BomberFish">
   </a>
   <a href="https://poyoweb.org/" target="_blank" class="badge"
-    ><img src="https://cdn.dispherical.com/assets/buttons/indieseas.png" alt="IndieSeas" title="IndieSeas"
+    ><img src="https://cdn.dispherical.com/assets/buttons/indieseas.png" alt="IndieSeas 88x31 button" title="IndieSeas"
   ></a>
   <!--<a href="https://guides.hackclub.app" target="_blank" class="badge"
     ><img src="https://cdn.dispherical.com/assets/buttons/nest.png" alt="Nest" title="Nest"
   ></a>-->
  <a href="https://chrisburnell.com/note/eleventy-animated-88x31/" target="_blank" class="badge"
-    ><img src="https://cdn.dispherical.com/assets/buttons/built-with-eleventy.gif" alt="'Built with Eleventy', with a balloon rising to nowhere." title="Built with Eleventy', with a balloon rising to nowhere."
+    ><img src="https://cdn.dispherical.com/assets/buttons/built-with-eleventy.gif" alt="'Built with Eleventy', with an animated rising balloon." title="Built with Eleventy', with a balloon rising to nowhere."
   ></a>
   <h3>Cool People</h3>
   <small>In no particular order</small>

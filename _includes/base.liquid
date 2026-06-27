@@ -62,7 +62,7 @@
     </script>
   </head>
 
-  <body data-barba="wrapper">
+  <body>
     <div id="map"></div>
 
     <header>
@@ -82,9 +82,11 @@
         </span>
       </nav>
     </header>
-    <main data-barba="container">
+      <div data-barba="wrapper">
+    <main data-barba="container" data-barba-namespace="default">
       {{ content }}
     </main>
+  </div>
     <div
       class="enby-accent-bar"
       style="background:linear-gradient(to right,#598b7c 0,#598b7c 14.2857%,#6bb8aa 14.2857%,#6bb8aa 28.5714%,#85c87d 28.5714%,#85c87d 42.8571%,#e4f1e8 42.8571%,#e4f1e8 57.1429%,#709cd4 57.1429%,#709cd4 71.4286%,#5450bc 71.4286%,#5450bc 85.7143%,#493b69 85.7143%,#493b69 100%);height:5px;width:100%;margin:0"

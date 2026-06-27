@@ -117,6 +117,7 @@ a {
 }
 .badge {
   image-rendering: pixelated;
+  text-decoration: none;
 }
 
 code {
@@ -127,13 +128,56 @@ code {
 /* Now playing insanity below (kms) */
 
 .now-playing {
+  position: relative;
+  overflow: hidden;
   background: #f9f9f9;
+  background-size: cover;
+  background-position: center;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   padding: 18px 20px;
   margin-bottom: 2em;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   max-width: 480px;
+}
+
+.now-playing.has-art {
+  border: none;
+  background-image: var(--bg-image, none);
+  color: #fff;
+}
+
+.now-playing.has-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  z-index: 0;
+}
+
+.now-playing.has-art > * {
+  position: relative;
+  z-index: 1;
+}
+
+.now-playing.has-art .track-name {
+  color: #fff;
+}
+
+.now-playing.has-art .artist-name,
+.now-playing.has-art .album-name {
+  color: #e0e0e0;
+}
+
+.now-playing.has-art .track-lyric {
+  color: #cfd2d6;
+}
+
+.now-playing.has-art .lastfm-icon {
+  filter: invert(1) brightness(1.2);
 }
 
 .now-playing-content {
@@ -178,6 +222,17 @@ code {
   width: 22px;
   height: 22px;
 }
+
+.expand-lyrics-box {
+  background: #f5f5f5;
+  color: #222;
+  border-radius: 8px;
+  margin-top: 8px;
+  padding: 12px;
+  max-height: 300px;
+  overflow: auto;
+}
+
 @media (prefers-color-scheme: dark) {
   .now-playing {
     background: #181825;
@@ -185,6 +240,10 @@ code {
     color: var(--dark-text-color);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   }
+  nav a {
+  text-decoration: underline !important;
+  color: #bac2de !important;
+}
   .track-name {
     color: #cdd6f4;
   }
@@ -194,6 +253,11 @@ code {
   }
   .track-lyric {
     color: #9399b2;
+  }
+  .expand-lyrics-box {
+    background: #181825;
+    border: 1px solid #313244;
+    color: #cdd6f4;
   }
   .album-art img {
     border: 1px solid #45475a;
@@ -206,3 +270,4 @@ code {
     filter: invert(1) brightness(1.2);
   }
 }
+

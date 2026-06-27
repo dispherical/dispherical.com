@@ -118,6 +118,7 @@ async function applySongInfo(data) {
   const artistNameElement = document.querySelector(".artist-name");
   const albumNameElement = document.querySelector(".album-name");
   const albumArtElement = document.querySelector(".album-art img");
+  const nowPlayingCard = document.querySelector(".now-playing");
   const nowPlayingElement = document.querySelector(".now-playing-content");
   const nothingPlayingElement = document.querySelector(".now-playing p");
 
@@ -131,6 +132,15 @@ async function applySongInfo(data) {
       albumArtElement.alt = `Album art for ${data.album}`;
     }
 
+    if (nowPlayingCard) {
+      if (data.image) {
+        nowPlayingCard.style.setProperty("--bg-image", `url("${data.image}")`);
+        nowPlayingCard.classList.add("has-art");
+      } else {
+        nowPlayingCard.classList.remove("has-art");
+      }
+    }
+
     if (nowPlayingElement) nowPlayingElement.style.display = "flex";
     if (nothingPlayingElement) nothingPlayingElement.style.display = "none";
 
@@ -141,6 +151,7 @@ async function applySongInfo(data) {
   } else {
     if (nowPlayingElement) nowPlayingElement.style.display = "none";
     if (nothingPlayingElement) nothingPlayingElement.style.display = "block";
+    if (nowPlayingCard) nowPlayingCard.classList.remove("has-art");
     document.querySelector("#currentLyric").innerText = "No track playing";
   }
 }
