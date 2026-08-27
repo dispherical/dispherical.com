@@ -91,7 +91,8 @@
       class="enby-accent-bar"
       style="background:linear-gradient(to right,#598b7c 0,#598b7c 14.2857%,#6bb8aa 14.2857%,#6bb8aa 28.5714%,#85c87d 28.5714%,#85c87d 42.8571%,#e4f1e8 42.8571%,#e4f1e8 57.1429%,#709cd4 57.1429%,#709cd4 71.4286%,#5450bc 71.4286%,#5450bc 85.7143%,#493b69 85.7143%,#493b69 100%);height:5px;width:100%;margin:0"
     ></div>
-    <footer>&copy; 2026 dispherical.com.</footer>
+    <footer>&copy; 2026 dispherical.com.<br><small>Background maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a></footer></footer>
+    
     <script>
       document.addEventListener('DOMContentLoaded', (event) => {
         barba.init({
@@ -146,10 +147,10 @@
         function getCartoTiles(mode) {
           const variant = mode === 'dark' ? 'dark_all' : 'light_all';
           return [
-            `https://a.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
-            `https://b.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
-            `https://c.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
-            `https://d.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png`,
+            `https://a.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png?key=cb1_29x6_1_5671900bc5ca597f0ff8bacb`,
+            `https://b.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png?key=cb1_29x6_1_5671900bc5ca597f0ff8bacb`,
+            `https://c.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png?key=cb1_29x6_1_5671900bc5ca597f0ff8bacb`,
+            `https://d.basemaps.cartocdn.com/${variant}/{z}/{x}/{y}{r}.png?key=cb1_29x6_1_5671900bc5ca597f0ff8bacb`,
           ];
         }
 
