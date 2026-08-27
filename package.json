@@ -12,7 +12,7 @@
     "@11ty/eleventy-fetch": "^5.1.2",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
-    "@imagemagick/magick-wasm": "^0.0.38",
+    "@imagemagick/magick-wasm": "^0.0.43",
     "cheerio": "^1.1.2",
     "esbuild": "^0.27.3",
     "mime-types": "^3.0.1",
