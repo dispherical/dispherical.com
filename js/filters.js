@@ -1,7 +1,7 @@
 import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/classes.js";
 import { fetchFile } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js";
 import {
-  initializeImageMagick,
+  initializeImageMagickx64,
   ImageMagick,
   MagickFormat,
 } from "/js/magick-wasm.js";
@@ -34,7 +34,7 @@ let magickReady = false;
 async function ensureMagickLoaded() {
   if (magickReady) return;
   const wasmBytes = await fetch("/js/magick.wasm").then((r) => r.arrayBuffer());
-  await initializeImageMagick(new Uint8Array(wasmBytes));
+  await initializeImageMagickx64(new Uint8Array(wasmBytes));
   magickReady = true;
 }
 
@@ -304,7 +304,7 @@ function readControlState(filterId) {
   return { blend, enabledEffects };
 }
 
-function buildGraph(filterId, state) {
+function buildGraph(filterId, state, { isFinal }) {
   const def = FILTERS[filterId];
   const lutFile = def.lut.file;
   const parts = [];
@@ -316,19 +316,24 @@ function buildGraph(filterId, state) {
   const chain = state.enabledEffects.map((e) =>
     e.value !== undefined ? e.effect.build(e.value) : e.effect.build()
   );
-  chain.push("scale=4096:-1");
+  if (isFinal) chain.push("scale='min(4096,iw)':-1");
 
   parts.push(`[blended]${chain.join(",")}[out]`);
   return parts.join(";");
 }
 
-async function applyFilter(filterId, inputName, outputName) {
+const writtenLuts = new Set();
+
+async function applyFilter(filterId, inputName, outputName, { isFinal }) {
   const def = FILTERS[filterId];
   const state = readControlState(filterId);
   if (!state) return;
 
-  await ffmpeg.writeFile(def.lut.file, await fetchFile(def.lut.url));
-  const graph = buildGraph(filterId, state);
+  if (!writtenLuts.has(def.lut.file)) {
+    await ffmpeg.writeFile(def.lut.file, await fetchFile(def.lut.url));
+    writtenLuts.add(def.lut.file);
+  }
+  const graph = buildGraph(filterId, state, { isFinal });
 
   await ffmpeg.exec([
     "-y", "-i", inputName,
@@ -392,9 +397,10 @@ applyBtn.addEventListener("click", async () => {
     for (let i = 0; i < selected.length; i += 1) {
       const filterId = selected[i];
       if (!FILTERS[filterId]) continue;
-      const stepOutput = i === selected.length - 1 ? outputName : `step-${i + 1}.jpg`;
+      const isFinal = i === selected.length - 1;
+      const stepOutput = isFinal ? outputName : `step-${i + 1}.png`;
       setMessage(`Applying ${FILTERS[filterId].name}…`);
-      await applyFilter(filterId, currentInput, stepOutput);
+      await applyFilter(filterId, currentInput, stepOutput, { isFinal });
       currentInput = stepOutput;
     }
 

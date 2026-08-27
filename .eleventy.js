@@ -52,7 +52,7 @@ module.exports = async function (eleventyConfig) {
     });
     const fs = require("fs");
     fs.copyFileSync(
-      "node_modules/@imagemagick/magick-wasm/dist/magick.wasm",
+      "node_modules/@imagemagick/magick-wasm/dist/x64/magick.wasm",
       "_site/js/magick.wasm"
     );
   });
